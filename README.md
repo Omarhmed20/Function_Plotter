@@ -31,7 +31,6 @@ The Function Plotter is a Python GUI application that allows users to plot arbit
 7. **Navigation Toolbar**: The Matplotlib plot includes a navigation toolbar with interactive features such as zooming and panning.
 8. **Modern GUI**: The application uses the PySide2 library for creating a modern and visually appealing graphical user interface.
 
-Feel free to customize and expand upon this list to accurately describe the features of your Function Plotter application.
 
 
 ## Examples
