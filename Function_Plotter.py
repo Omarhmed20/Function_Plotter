@@ -108,17 +108,25 @@ class MainWindow(QMainWindow):
             raise ValueError("Invalid value")
 
     def plot_function(self):
-        function = self.parse_function(self.function_input.text().strip())
-        x_min = self.parse_value(self.x_min_input.text().strip())
-        x_max = self.parse_value(self.x_max_input.text().strip())
+        function = self.function_input.text().strip()
+        x_min = self.x_min_input.text().strip()
+        x_max = self.x_max_input.text().strip()
 
-        if x_min >= x_max:
+        try:
+            parsed_function = self.parse_function(function)
+            parsed_x_min = self.parse_value(x_min)
+            parsed_x_max = self.parse_value(x_max)
+        except ValueError as e:
+            self.show_error_message("Invalid Input", str(e))
+            return
+
+        if parsed_x_min >= parsed_x_max:
             self.show_error_message("Invalid Range", "Minimum value must be less than maximum value")
             return
 
-        x = np.linspace(x_min, x_max, 100)
+        x = np.linspace(parsed_x_min, parsed_x_max, 100)
         try:
-            y = eval(function)
+            y = eval(parsed_function)
         except Exception as e:
             self.show_error_message("Evaluation Error", str(e))
             return
