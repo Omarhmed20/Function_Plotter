@@ -18,6 +18,22 @@ Run the `function_plotter.py` script to launch the application:
 
 Enter a valid mathematical function, along with the minimum and maximum values of x, and click the "Plot" button to visualize the function.
 
+## Features
+
+The Function Plotter is a Python GUI application that allows users to plot arbitrary functions of x. It provides the following features:
+
+1. **User-Entered Function**: Users can enter a function of x, supporting basic arithmetic operators (+, -, *, /) and exponentiation (^).
+2. **Dynamic Plotting**: The application dynamically plots the entered function based on user inputs.
+3. **Input Validation**: The user input for the function and x range values is validated to ensure they meet the required format and constraints.
+4. **Error Messages**: If there are any errors in the user input, appropriate error messages are displayed to guide the user.
+5. **Matplotlib Integration**: The application utilizes Matplotlib to generate the function plot and embeds the plot within the GUI.
+6. **Scalability**: The GUI layout is designed to scale proportionally as the application window is resized, providing an optimal user experience across different screen sizes.
+7. **Navigation Toolbar**: The Matplotlib plot includes a navigation toolbar with interactive features such as zooming and panning.
+8. **Modern GUI**: The application uses the PySide2 library for creating a modern and visually appealing graphical user interface.
+
+Feel free to customize and expand upon this list to accurately describe the features of your Function Plotter application.
+
+
 ## Examples
 
 ### Working Example 1
