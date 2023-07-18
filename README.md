@@ -20,17 +20,35 @@ Enter a valid mathematical function, along with the minimum and maximum values o
 
 ## Examples
 
-### Working Example
+### Working Example 1
 
-![Working Example](screenshots/working_example.png)
+![Working Example](screenshots/Working_Example_1.png)
 
 In this example, we have entered the function `x**2`, with a minimum value of `-5` and a maximum value of `5`. The application successfully plots the function.
 
-### Wrong Example
+### Working Example 2
 
-![Wrong Example](screenshots/wrong_example.png)
+![Working Example](screenshots/Working_Example_2.png)
 
-In this example, we have entered an invalid function `invalid_function`. The application displays an error message indicating that the function is invalid.
+In this example, we have entered the function `5*x^3 + 2*x`, with a minimum value of `0` and a maximum value of `10`. The application successfully plots the function.
+
+### Wrong Example 1
+
+![Wrong Example](screenshots/Wrong_Example_2.png)
+
+In this example, we have entered an invalid function `x**2 + a`. The application displays an error message indicating that the function is invalid.
+
+### Wrong Example 2
+
+![Wrong Example](screenshots/Wrong_Example_3.png)
+
+In this example, we have entered an invalid min value `number`. The application displays an error message indicating that the value is invalid.
+
+### Wrong Example 3
+
+![Wrong Example](screenshots/Wrong_Example_1.png)
+
+In this example, we have entered a max value of x that is less than min value of x `min x = -5, max x = -10`. The application displays an error message indicating that max value of x is less than min value of x.
 
 ## License
 
