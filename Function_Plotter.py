@@ -9,8 +9,10 @@ from PySide2.QtWidgets import (
     QVBoxLayout,
     QWidget,
     QMessageBox,
+    QHBoxLayout,
 )
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 import numpy as np
 import re
@@ -22,34 +24,75 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Function Plotter")
         self.setGeometry(100, 100, 800, 600)
 
+        # Main layout
         self.layout = QVBoxLayout()
 
+        # Function input layout
+        function_layout = QHBoxLayout()
+
+        # Function label
         self.function_label = QLabel("Enter a function of x:")
+        function_layout.addWidget(self.function_label)
+
+        # Function input
         self.function_input = QLineEdit()
-        self.layout.addWidget(self.function_label)
-        self.layout.addWidget(self.function_input)
+        function_layout.addWidget(self.function_input)
 
-        self.x_min_label = QLabel("Enter the minimum value of x:")
+        self.layout.addLayout(function_layout)
+
+        # Horizontal layout for x min and max inputs
+        x_range_layout = QHBoxLayout()
+
+        # x min input
+        self.x_min_label = QLabel("Minimum value of x:")
         self.x_min_input = QLineEdit()
-        self.layout.addWidget(self.x_min_label)
-        self.layout.addWidget(self.x_min_input)
+        x_range_layout.addWidget(self.x_min_label)
+        x_range_layout.addWidget(self.x_min_input)
 
-        self.x_max_label = QLabel("Enter the maximum value of x:")
+        # x max input
+        self.x_max_label = QLabel("Maximum value of x:")
         self.x_max_input = QLineEdit()
-        self.layout.addWidget(self.x_max_label)
-        self.layout.addWidget(self.x_max_input)
+        x_range_layout.addWidget(self.x_max_label)
+        x_range_layout.addWidget(self.x_max_input)
 
+        self.layout.addLayout(x_range_layout)
+
+        # Plot button
         self.plot_button = QPushButton("Plot")
         self.plot_button.clicked.connect(self.plot_function)
         self.layout.addWidget(self.plot_button)
 
+        # Matplotlib figure and canvas
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
         self.layout.addWidget(self.canvas)
 
+        # Matplotlib navigation toolbar
+        self.toolbar = NavigationToolbar(self.canvas, self)
+        self.layout.addWidget(self.toolbar)
+
+        # Central widget
         self.central_widget = QWidget()
         self.central_widget.setLayout(self.layout)
         self.setCentralWidget(self.central_widget)
+
+        # Set size policies and stretch factors for scalability
+        self.function_input.setSizePolicy(
+            self.function_input.sizePolicy().Expanding,
+            self.function_input.sizePolicy().Fixed,
+        )
+        self.x_min_input.setSizePolicy(
+            self.x_min_input.sizePolicy().Expanding,
+            self.x_min_input.sizePolicy().Fixed,
+        )
+        self.x_max_input.setSizePolicy(
+            self.x_max_input.sizePolicy().Expanding,
+            self.x_max_input.sizePolicy().Fixed,
+        )
+        self.layout.setStretchFactor(self.function_input, 1)
+        self.layout.setStretchFactor(self.x_min_input, 1)
+        self.layout.setStretchFactor(self.x_max_input, 1)
+        self.layout.setStretchFactor(self.canvas, 4)
 
     def parse_function(self, func):
         # Check if the function is valid and replace ^ with ** for exponentiation
@@ -65,30 +108,17 @@ class MainWindow(QMainWindow):
             raise ValueError("Invalid value")
 
     def plot_function(self):
-        function = self.function_input.text().strip()
-        x_min = self.x_min_input.text().strip()
-        x_max = self.x_max_input.text().strip()
+        function = self.parse_function(self.function_input.text().strip())
+        x_min = self.parse_value(self.x_min_input.text().strip())
+        x_max = self.parse_value(self.x_max_input.text().strip())
 
-        try:
-            parsed_function = self.parse_function(function)
-        except ValueError as e:
-            self.show_error_message("Invalid Function", str(e))
-            return
-
-        try:
-            parsed_x_min = self.parse_value(x_min)
-            parsed_x_max = self.parse_value(x_max)
-        except ValueError as e:
-            self.show_error_message("Invalid Value", str(e))
-            return
-
-        if parsed_x_min >= parsed_x_max:
+        if x_min >= x_max:
             self.show_error_message("Invalid Range", "Minimum value must be less than maximum value")
             return
 
-        x = np.linspace(parsed_x_min, parsed_x_max, 100)
+        x = np.linspace(x_min, x_max, 100)
         try:
-            y = eval(parsed_function)
+            y = eval(function)
         except Exception as e:
             self.show_error_message("Evaluation Error", str(e))
             return
@@ -101,11 +131,11 @@ class MainWindow(QMainWindow):
         self.canvas.draw()
 
     def show_error_message(self, title, message):
-        error_dialog = QMessageBox()
-        error_dialog.setWindowTitle(title)
-        error_dialog.setText(message)
-        error_dialog.setIcon(QMessageBox.Warning)
-        error_dialog.exec_()
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle(title)
+        msg_box.setText(message)
+        msg_box.setIcon(QMessageBox.Warning)
+        msg_box.exec_()
 
 
 if __name__ == "__main__":
